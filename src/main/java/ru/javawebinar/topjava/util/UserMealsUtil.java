@@ -30,15 +30,6 @@ public class UserMealsUtil {
     }
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-
-        //Filter meals according to the given time
-        List<UserMeal> filteredMeals = new ArrayList<>();
-        for(UserMeal meal : meals){
-            if (TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(),startTime,endTime)){
-                filteredMeals.add(meal);
-            }
-        }
-
         //Count the calories per day
         Map<LocalDate, Integer> caloriesSumPerDay = new HashMap<>();
         for (UserMeal meal: meals) {
@@ -48,23 +39,24 @@ public class UserMealsUtil {
 
         //Calculate excess
         List<UserMealWithExcess> result = new ArrayList<>();
-        for(UserMeal meal : filteredMeals){
-            LocalDate date = meal.getDateTime().toLocalDate();
-            boolean excess = caloriesSumPerDay.get(date) > caloriesPerDay;
-            result.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess));
+        for(UserMeal meal : meals){
+            if(TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(),startTime,endTime)) {
+                LocalDate date = meal.getDateTime().toLocalDate();
+                boolean excess = caloriesSumPerDay.get(date) > caloriesPerDay;
+                result.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess));
+            }
         }
         return result;
     }
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        //Filter by day
+        //Group by day
         Map<LocalDate, List<UserMeal>> mealsByDay = meals.stream()
                 .collect(Collectors.groupingBy(meal -> meal.getDateTime().toLocalDate()));
 
-        //Make sets from keys and values
+        //Make set from values
         return mealsByDay.entrySet().stream()
                 .flatMap(entry -> {
-                    LocalDate date = entry.getKey();
                     List<UserMeal> dailyMeals = entry.getValue();
 
                     // Count daily calories
