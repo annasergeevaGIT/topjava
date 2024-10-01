@@ -59,7 +59,7 @@ public class UserMealsUtil {
                 ));
         //Filter by time and create UserMealWithExcess
         return meals.stream()
-                .filter(meal -> TimeUtil.isBetweenHalfOpen((meal.getDateTime().toLocalTime(), startTime, endTime))
+                .filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime))
                 .map(meal -> {
                     LocalDate date = meal.getDateTime().toLocalDate();
                     boolean excess = caloriesSumPerDay.get(date) > caloriesPerDay;
