@@ -50,6 +50,25 @@ public class UserMealsUtil {
     }
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+        // Count sum of calories per day
+        Map<LocalDate, Integer> caloriesSumPerDay = meals.stream()
+                .collect(Collectors.toMap(
+                        meal -> meal.getDateTime().toLocalDate(),
+                        UserMeal::getCalories, // (a, b) -> UserMeal.getCalories(a, b)
+                        Integer::sum // (a, b) -> Integer.sum(a, b)
+                ));
+        //Filter by time and create UserMealWithExcess
+        return meals.stream()
+                .filter(meal -> TimeUtil.isBetweenHalfOpen((meal.getDateTime().toLocalTime(), startTime, endTime))
+                .map(meal -> {
+                    LocalDate date = meal.getDateTime().toLocalDate();
+                    boolean excess = caloriesSumPerDay.get(date) > caloriesPerDay;
+                    return new UserMealWithExcess(meal.getDateTime(),meal.getDescription(),meal.getCalories(), excess);
+                })
+                .collect(Collectors.toList());
+    }
+
+    public static List<UserMealWithExcess> filteredByStreams2(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         return meals.stream()
                 .collect(Collectors.groupingBy(meal -> meal.getDateTime().toLocalDate())) // Group by day
                 .values().stream() // Stream over the grouped meal lists
@@ -66,7 +85,7 @@ public class UserMealsUtil {
                 .collect(Collectors.toList());
     }
 
-    public static List<UserMealWithExcess> filteredByStreams2(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+    public static List<UserMealWithExcess> filteredByStreams3(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         //Group by day
         Map<LocalDate, List<UserMeal>> mealsByDay = meals.stream()
                 .collect(Collectors.groupingBy(meal -> meal.getDateTime().toLocalDate()));
