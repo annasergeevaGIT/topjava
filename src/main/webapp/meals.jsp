@@ -12,7 +12,7 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<table border="1" cellpadding="8" >
+<table>
     <thead>
     <tr>
         <th>Date</th>
