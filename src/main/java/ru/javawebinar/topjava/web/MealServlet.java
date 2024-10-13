@@ -33,7 +33,6 @@ public class MealServlet extends HttpServlet {
                 new MealTo(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410, true)
         );
 
-
         request.setAttribute("meals", meals);
         request.getRequestDispatcher("/users.jsp").forward(request, response);
         //response.sendRedirect("meals.jsp");

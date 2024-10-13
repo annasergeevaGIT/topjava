@@ -4,19 +4,18 @@
 <head>
     <title>Meals</title>
     <style>
-        .excess { background-color: red; }
-        .normal { background-color: green; }
+        .excess { color: red; }
+        .normal { color: green; }
     </style>
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<table border="1">
+<table border="1" cellpadding="8" >
     <thead>
     <tr>
         <th>Date</th>
-        <th>Time</th>
         <th>Description</th>
         <th>Calories</th>
     </tr>
@@ -24,8 +23,6 @@
     <tbody>
     <c:forEach var="meal" items="${meals}">
         <tr class="${meal.excess ? 'excess' : 'normal'}">
-            <td>${meal.dateTime.toLocalDate()}</td>
-            <td>${meal.dateTime.toLocalTime()}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
         </tr>
