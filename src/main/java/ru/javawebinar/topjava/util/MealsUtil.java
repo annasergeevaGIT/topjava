@@ -45,3 +45,4 @@ public class MealsUtil {
         return new MealTo(meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 }
+

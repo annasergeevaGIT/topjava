@@ -21,8 +21,10 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="meal" items="${meals}">
+    <c:forEach var="meal" items="${requestScope.meals}">
+        <jsp:useBean id="meal" scope="request" type="ru.javawebinar.topjava.model.MealTo"/>
         <tr class="${meal.excess ? 'excess' : 'normal'}">
+            <td>${fn:formatDateTime(meal.dateTime)}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
         </tr>
