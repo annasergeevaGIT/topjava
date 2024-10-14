@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="ru">
 <head>
     <title>Meals</title>
     <style>
         .excess { color: red; }
+        .normal { color: green; }
     </style>
 </head>
 <body>
@@ -21,14 +21,15 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="meal" items="${meals}">
-        <tr class="${meal.excess ? 'excess' : ''}">
-            <td><fmt:formatDate value="${meal.dateTime}" pattern="yyyy-MM-dd HH:mm" /></td>
+    <c:forEach var="meal" items="${requestScope.meals}">
+        <tr class="${meal.excess ? 'excess' : 'true'}">
+            <td>${meal.dateTime}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
+
 </body>
 </html>
