@@ -1,7 +1,7 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.model.MealTo;
+import ru.javawebinar.topjava.model.UserMealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ public class MealServlet extends HttpServlet {
         log.debug("display meals");
 
         // Convert to List<MealTo> with the excess flag calculated
-        List<MealTo> mealsTo = MealsUtil.filteredByStreams(MealsUtil.meals, LocalTime.of(7, 0), LocalTime.of(12, 0), CALORIES_PER_DAY);
+        List<UserMealWithExceed> mealsTo = MealsUtil.filteredByStreams(MealsUtil.MEAL_LIST, LocalTime.of(7, 0), LocalTime.of(12, 0), CALORIES_PER_DAY);
         request.setAttribute("meals", mealsTo);
 
         // Forward to JSP
