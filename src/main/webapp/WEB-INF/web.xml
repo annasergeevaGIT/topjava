@@ -6,6 +6,7 @@
 
     <display-name>TopJava</display-name>
 
+    <!-- ??? add Spring ContextLoaderListener to load Spring beans -->
     <servlet>
         <servlet-name>userServlet</servlet-name>
         <servlet-class>ru.javawebinar.topjava.web.UserServlet</servlet-class>
