@@ -3,11 +3,10 @@ package ru.javawebinar.topjava.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.util.List;
 
@@ -16,29 +15,27 @@ public class MealService {
     @Autowired
     private MealRepository repository;
 
-    public MealTo get(int id) {
-        Meal meal = repository.get(id, SecurityUtil.authUserId());
-        if (meal == null) {
-            throw new NotFoundException("Meal not found");
+    public Meal get(int id, int userId) {
+        Meal meal = repository.get(id, userId);
+        if (meal == null || meal.getUserId() != userId) {
+            throw new NotFoundException("Meal not found or does not belong to the user");
         }
-        return MealsUtil.createTo(meal, meal.getCalories() > MealsUtil.DEFAULT_CALORIES_PER_DAY);
+        return meal;
     }
 
-    public MealTo create(Meal meal) {
-        meal.setUserId(SecurityUtil.authUserId());
-        return MealsUtil.createTo(repository.save(meal, meal.getUserId()), meal.getCalories() > MealsUtil.DEFAULT_CALORIES_PER_DAY);
+    public MealTo create(Meal meal, int userId) {
+        meal.setUserId(userId);
+        return MealsUtil.createTo(repository.save(meal, userId), meal.getCalories() > MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
-    public MealTo update(int id, Meal meal) {
-        meal.setUserId(SecurityUtil.authUserId());
-        return MealsUtil.createTo(repository.save(meal, meal.getUserId()), meal.getCalories() > MealsUtil.DEFAULT_CALORIES_PER_DAY);
+    public void delete(int id, int userId) {
+        if (!repository.delete(id, userId)) {
+            throw new NotFoundException("Meal not found or does not belong to the user");
+        }
     }
 
-    public void delete(int id) {
-        repository.delete(id, SecurityUtil.authUserId());
-    }
-
-    public List<MealTo> getAll() {
-        return MealsUtil.getTos(repository.getAll(SecurityUtil.authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY);
+    public List<MealTo> getAll(int userId) {
+        return MealsUtil.getTos(repository.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 }
+
