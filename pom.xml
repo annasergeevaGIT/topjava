@@ -20,7 +20,6 @@
         <!-- Logging -->
         <logback.version>1.2.13</logback.version>
         <slf4j.version>1.7.36</slf4j.version>
-        <spring-boot-starter-web.version>3.3.4</spring-boot-starter-web.version>
     </properties>
 
     <build>
@@ -64,12 +63,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot-starter-web.version}</version>
         </dependency>
 
         <!--Web-->
