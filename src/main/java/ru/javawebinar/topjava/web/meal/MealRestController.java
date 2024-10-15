@@ -11,11 +11,10 @@ import ru.javawebinar.topjava.to.MealTo;
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
-import javax.servlet.http.HttpServlet;
 import java.util.List;
 
 @Controller
-public class MealRestController extends HttpServlet {
+public class MealRestController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired

@@ -7,9 +7,7 @@ import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,13 +18,14 @@ import java.util.List;
 
 @WebServlet("/api/meals/*")
 public class MealServlet extends HttpServlet {
+
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
     // MealService instance for handling business logic
     private final MealService service = new MealService(); // Consider dependency injection in a Spring context
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int userId = SecurityUtil.authUserId();
         String pathInfo = request.getPathInfo();
 
