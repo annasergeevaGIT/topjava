@@ -10,6 +10,8 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.util.List;
 
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
+
 @Service
 public class MealService {
     @Autowired
@@ -26,6 +28,10 @@ public class MealService {
     public MealTo create(Meal meal, int userId) {
         meal.setUserId(userId);
         return MealsUtil.createTo(repository.save(meal, userId), meal.getCalories() > MealsUtil.DEFAULT_CALORIES_PER_DAY);
+    }
+
+    public void update(Meal meal, int userId) {
+        checkNotFoundWithId(repository.save(meal, userId), meal.getUserId());
     }
 
     public void delete(int id, int userId) {

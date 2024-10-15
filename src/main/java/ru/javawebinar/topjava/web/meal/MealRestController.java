@@ -1,41 +1,50 @@
 package ru.javawebinar.topjava.web.meal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.MealTo;
 import ru.javawebinar.topjava.service.MealService;
+import ru.javawebinar.topjava.to.MealTo;
 
+import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
+
+import javax.servlet.http.HttpServlet;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/meals")
-public class MealRestController {
+@Controller
+public class MealRestController extends HttpServlet {
+    protected final Logger log = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private MealService service;
 
-    @GetMapping("/{id}")
-    public MealTo get(@PathVariable int id) {
-        return service.get(id);
+    public List<MealTo> getAll(int userId) {
+        log.info("getAll");
+        return service.getAll(userId);
     }
 
-    @PostMapping
-    public MealTo create(@RequestBody Meal meal) {
-        return service.create(meal);
+    public Meal get(int id, int userId) {
+        log.info("get {}", id);
+        return service.get(id, userId);
     }
 
-    @PutMapping("/{id}")
-    public MealTo update(@PathVariable int id, @RequestBody Meal meal) {
-        return service.update(id, meal);
+    public MealTo create(Meal meal, int userId) {
+        log.info("create {}", meal);
+        checkNew(meal);
+        return service.create(meal, userId);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id) {
-        service.delete(id);
+    public void delete(int id, int userId) {
+        log.info("delete {}", id);
+        service.delete(id, userId);
     }
 
-    @GetMapping
-    public List<MealTo> getAll() {
-        return service.getAll();
+    public void update(Meal meal, int userId) {
+        log.info("update {} with id={}", meal, userId);
+        assureIdConsistent(meal, userId);
+        service.update(meal, userId);
     }
 }

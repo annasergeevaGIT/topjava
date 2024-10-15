@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class Meal {
+public class Meal extends AbstractNamedEntity{
     private Integer userId; //connection to userId
     private final LocalDateTime dateTime;
     private final String description;
@@ -15,6 +15,7 @@ public class Meal {
     }
 
     public Meal(Integer userId, LocalDateTime dateTime, String description, int calories) {
+        super(userId, description);
         this.userId = userId;
         this.dateTime = dateTime;
         this.description = description;
