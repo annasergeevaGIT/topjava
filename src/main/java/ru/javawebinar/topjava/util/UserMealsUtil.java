@@ -29,12 +29,28 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         // TODO return filtered list with excess. Implement by cycles
+        for (UserMeal meal : meals) {
+            LocalDateTime dateTime = meal.getDateTime();
+            LocalTime time = dateTime.toLocalTime();
+            if (time.isAfter(startTime) && time.isBefore(endTime)) {
+                boolean excess = meal.getCalories() > caloriesPerDay;
+                UserMealWithExcess mealWithExcess = new UserMealWithExcess(dateTime, meal.getDescription(), meal.getCalories(), excess);
+                System.out.println(mealWithExcess);
+            }
+        }
         return null;
     }
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         // TODO Implement by streams
-        System.out.println("Not implemented yet");
+        meals.stream()
+                .filter(meal -> meal.getDateTime().toLocalTime().isAfter(startTime) && meal.getDateTime().toLocalTime().isBefore(endTime))
+                .map(meal -> new UserMealWithExcess(
+                        meal.getDateTime(),
+                        meal.getDescription(),
+                        meal.getCalories(),
+                        meal.getCalories() > caloriesPerDay))
+                .forEach(System.out::println);
         return null;
     }
 }
